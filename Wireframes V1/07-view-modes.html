@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>View Modes — Wireframe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span>●●●●</span></div>
+
+  <div class="screen">
+    <div class="topbar">
+      <a class="icon-btn" href="05-note-editor.html" title="Back to note">←</a>
+      <h1 style="font-size:16px;">Random thoughts</h1>
+    </div>
+
+    <div class="viewmode-tabs">
+      <button data-viewmode-tab="original" class="active" type="button">Original</button>
+      <button data-viewmode-tab="inline" type="button">Inline comments</button>
+      <button data-viewmode-tab="footer" type="button">Highlights + notes</button>
+    </div>
+
+    <div class="note-list" style="padding: 0;">
+
+      <!-- (a) original — no annotations at all -->
+      <div class="editor-body viewmode-panel active" data-viewmode-panel="original" style="min-height:100%;">
+        <p>Feeling kind of stuck today, but <span lang="ar" dir="rtl">إن شاء الله</span> will figure it out soon. Work has been a lot and I haven't had time to just sit and think.</p>
+        <p>Talked to Sara about it — she said <span lang="ar" dir="rtl">خذي وقتك</span>, take your time. Maybe she's right.</p>
+        <p>Trying to remind myself that it's okay to slow down. <span lang="ar" dir="rtl">بكرة يوم جديد</span> — tomorrow is a new day.</p>
+      </div>
+
+      <!-- (b) inline — comments rendered next to the highlighted text -->
+      <div class="editor-body viewmode-panel" data-viewmode-panel="inline" style="min-height:100%;">
+        <p>Feeling kind of <span class="hl-yellow">stuck today</span><span class="inline-annotation">revisit after talking to Mona</span>, but <span class="hl-green" lang="ar" dir="rtl">إن شاء الله</span><span class="inline-annotation">hopeful tone — good sign</span> will figure it out soon. Work has been a lot and I haven't had time to just sit and think.</p>
+        <p>Talked to Sara about it — she said <span lang="ar" dir="rtl">خذي وقتك</span>, take your time. Maybe she's right.</p>
+        <p>Trying to remind myself that it's okay to slow down. <span lang="ar" dir="rtl">بكرة يوم جديد</span> — tomorrow is a new day.</p>
+      </div>
+
+      <!-- (c) highlights only, comments listed at the bottom -->
+      <div class="editor-body viewmode-panel" data-viewmode-panel="footer" style="min-height:100%;">
+        <p>Feeling kind of <span class="hl-yellow">stuck today</span>, but <span class="hl-green" lang="ar" dir="rtl">إن شاء الله</span> will figure it out soon. Work has been a lot and I haven't had time to just sit and think.</p>
+        <p>Talked to Sara about it — she said <span lang="ar" dir="rtl">خذي وقتك</span>, take your time. Maybe she's right.</p>
+        <p>Trying to remind myself that it's okay to slow down. <span lang="ar" dir="rtl">بكرة يوم جديد</span> — tomorrow is a new day.</p>
+
+        <div class="footer-comments">
+          <h2>Comments</h2>
+          <div class="footer-comment-item">
+            <span class="dot" style="background:var(--highlight-yellow);"></span>
+            <span>"stuck today" — revisit after talking to Mona</span>
+          </div>
+          <div class="footer-comment-item">
+            <span class="dot" style="background:var(--highlight-green);"></span>
+            <span dir="auto">"<span lang="ar" dir="rtl">إن شاء الله</span>" — hopeful tone, good sign</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

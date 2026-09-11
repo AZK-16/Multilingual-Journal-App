@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Note Editor — Wireframe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span>●●●●</span></div>
+
+  <div class="screen">
+    <div class="topbar">
+      <a class="icon-btn" href="02-all-notes.html" title="Back to all notes / folders">←</a>
+      <div class="toolbar-spacer"></div>
+      <span class="icon-btn" style="opacity:.5;">☆</span>
+    </div>
+
+    <!-- Existing note: "Random thoughts" — English/Arabic code-switched -->
+    <div data-editor-panel="existing">
+      <input class="editor-title" value="Random thoughts" readonly>
+      <div class="editor-meta">Sep 5 · 11:14 PM · No folder</div>
+      <div class="editor-body">
+        <p>Feeling kind of stuck today, but <span lang="ar" dir="rtl">إن شاء الله</span> will figure it out soon. Work has been a lot and I haven't had time to just sit and think.</p>
+        <p>Talked to Sara about it — she said <span lang="ar" dir="rtl">خذي وقتك</span>, take your time. Maybe she's right.</p>
+        <p>Trying to remind myself that it's okay to slow down. <span lang="ar" dir="rtl">بكرة يوم جديد</span> — tomorrow is a new day.</p>
+      </div>
+    </div>
+
+    <!-- New note: blank state, opened from the Welcome / FAB "New Note" CTA -->
+    <div data-editor-panel="new">
+      <input class="editor-title" placeholder="Title">
+      <div class="editor-meta">Today · No folder</div>
+      <div class="editor-body">
+        <p class="empty-note-hint">Start writing — in any language, or a few at once…</p>
+      </div>
+    </div>
+
+    <div class="bottom-toolbar">
+      <div class="swatch-group">
+        <a class="swatch yellow" href="06-highlight-interaction.html" title="Highlight yellow"></a>
+        <a class="swatch green" href="06-highlight-interaction.html" title="Highlight green"></a>
+        <a class="swatch pink" href="06-highlight-interaction.html" title="Highlight pink"></a>
+      </div>
+      <div class="toolbar-spacer"></div>
+      <a class="icon-btn" href="05-note-editor.html?mode=new" title="Add note">+</a>
+      <a class="icon-btn" href="07-view-modes.html" title="Switch view mode">◫</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
