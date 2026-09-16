@@ -244,6 +244,94 @@ html, body {
   direction: rtl;
 }
 
+/* ---- note grid (card layout, 2 per row) ---------------------------------- */
+
+.note-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 16px 90px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 14px;
+  align-content: start;
+}
+
+.note-card {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.note-card-box {
+  position: relative;
+  background: var(--bg-app);
+  border-radius: 14px;
+  padding: 12px;
+  min-height: 172px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.note-card-preview {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  text-align: left;
+}
+
+.note-card-preview[dir="rtl"] { text-align: right; }
+
+.fav-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.note-card-caption {
+  padding: 8px 2px 0;
+  min-width: 0;
+  text-align: center;
+}
+
+.note-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.note-card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  min-width: 0;
+}
+
+.note-card-title.untitled {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-style: italic;
+}
+
+.note-card-meta {
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
 /* ---- floating action button --------------------------------------------- */
 
 .fab {
@@ -281,6 +369,8 @@ html, body {
   color: var(--text);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 6px;
 }
 
