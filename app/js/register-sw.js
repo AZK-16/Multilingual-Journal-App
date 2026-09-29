@@ -9,10 +9,13 @@ if ('serviceWorker' in navigator) {
   });
 
   // A new version taking over mid-session would leave the page running old
-  // scripts against new cached assets, so reload once when control changes.
+  // scripts against newly cached assets, so reload once when control changes.
+  // Not on the very first registration though: that is simply the worker
+  // claiming an uncontrolled page, and nothing on screen is stale.
+  const hadController = !!navigator.serviceWorker.controller;
   let reloading = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (reloading) return;
+    if (!hadController || reloading) return;
     reloading = true;
     location.reload();
   });

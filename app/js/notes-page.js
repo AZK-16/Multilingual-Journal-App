@@ -2,6 +2,7 @@
 
 import { getAllNotes, exportAll, importAll, validateBackup } from './db.js';
 import { searchNotes, sortNotes, pluralise } from './model.js';
+import { getVersionLabel } from './version.js';
 import {
   boot, renderNoteCard, renderEmptyState, bottomSheet, consumeFlash,
   confirmDialog, toast, showError
@@ -98,13 +99,14 @@ function wireControls() {
     render();
   });
 
-  overflowBtn.addEventListener('click', () => {
+  overflowBtn.addEventListener('click', async () => {
     bottomSheet({
       items: [
         { icon: '🗑', label: 'Recycle bin', onSelect: () => { location.href = './bin.html'; } },
         { icon: '⬇', label: 'Export all notes', onSelect: onExport },
         { icon: '⬆', label: 'Import from backup', onSelect: () => fileInput.click() }
-      ]
+      ],
+      footer: await getVersionLabel()
     });
   });
 }

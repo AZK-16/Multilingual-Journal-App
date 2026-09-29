@@ -1,5 +1,6 @@
-// BUMP THIS on every deploy. The activate step deletes every cache that does
-// not match, which is what stops an old copy of the app sticking on the phone.
+// Cache version. Everything below is network-first, so a normal deploy reaches
+// the phone without touching this. Bump it only to force every device to throw
+// its stored copy away — see the README for when that is actually needed.
 const CACHE = 'journal-v1';
 
 // Relative URLs throughout, so the app works from a GitHub Pages subpath
@@ -16,6 +17,7 @@ const PRECACHE = [
   './js/db.js',
   './js/model.js',
   './js/ui.js',
+  './js/version.js',
   './js/notes-page.js',
   './js/folders-page.js',
   './js/folder-page.js',
@@ -27,20 +29,33 @@ const PRECACHE = [
   './icons/icon-512-maskable.png'
 ];
 
+// 'no-cache' revalidates with the server on every request, so GitHub Pages'
+// own HTTP caching can never hand back a file from before the last deploy.
+function fromNetwork(url) {
+  return fetch(new Request(url, { cache: 'no-cache', credentials: 'same-origin' }));
+}
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE)
-      .then((cache) => cache.addAll(PRECACHE))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    // One file failing must not fail the whole install; the fetch handler
+    // fills in anything missing the first time it is asked for.
+    await Promise.all(PRECACHE.map(async (url) => {
+      try {
+        const response = await fromNetwork(url);
+        if (response.ok) await cache.put(url, response);
+      } catch { /* offline during install */ }
+    }));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
-      .then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', (event) => {
@@ -50,33 +65,29 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Pages go to the network first so a fresh deploy is picked up as soon as
-  // there is a connection, and fall back to the cache when there isn't one.
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => caches.match(request).then((hit) => hit || caches.match('./index.html')))
-    );
-    return;
-  }
+  const isNavigation = request.mode === 'navigate';
+  // Pages are stored under their path alone, so a single entry serves
+  // note.html?id=… for every note rather than one entry per note opened.
+  const cacheKey = isNavigation ? url.origin + url.pathname : request;
 
-  // Everything else is served from the cache; the cache name carries the
-  // version, so a deploy replaces these wholesale rather than ageing out.
-  event.respondWith(
-    caches.match(request).then((hit) => {
-      if (hit) return hit;
-      return fetch(request).then((response) => {
-        if (response.ok && response.type === 'basic') {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, copy));
-        }
-        return response;
-      });
-    })
-  );
+  event.respondWith((async () => {
+    try {
+      const response = await fromNetwork(url.href);
+      if (response.ok && response.type === 'basic') {
+        const copy = response.clone();
+        // Refreshing the stored copy on every success is what keeps the
+        // offline version in step with what was last deployed.
+        caches.open(CACHE).then((cache) => cache.put(cacheKey, copy));
+      }
+      return response;
+    } catch {
+      const cached = await caches.match(cacheKey);
+      if (cached) return cached;
+      if (isNavigation) {
+        const shell = await caches.match('./index.html');
+        if (shell) return shell;
+      }
+      return Response.error();
+    }
+  })());
 });

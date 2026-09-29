@@ -47,7 +47,31 @@ Then open <http://localhost:8000/app/>.
 
    The wireframes stay reachable at `.../Multilingual-Journal-App/Wireframes%20V1/index.html`.
 
-> **Every time you deploy a change**, open `app/sw.js` and bump the version on the first line — `journal-v1` → `journal-v2`, and so on. The service worker deletes every cache that doesn't match that name, which is what stops your phone serving an old copy of the app. If you skip this, your phone may keep showing the previous version.
+### Pushing updates
+
+Just push. You do **not** need to change anything in `app/sw.js` for a normal deploy.
+
+The service worker fetches every file from the network first and falls back to its stored copy only when there is no connection, and each request revalidates with the server so GitHub Pages' own HTTP caching can't hand back a file from before your push. Every successful response replaces the stored copy, so the offline version stays in step too.
+
+So the update path is: push → wait for Pages to finish building (usually under a minute) → reopen the app and it's the new version. If it's already open, pull down to refresh or close and reopen it.
+
+**To check which version your phone is actually running**, open the app, tap **⋮** on All Notes, and read the small line at the bottom of the menu — it shows the app version and when the running files were last deployed:
+
+```
+Journal v1 · updated 29 Sept 2026, 18:58
+```
+
+If that timestamp matches roughly when you pushed, your phone has the new build.
+
+**When you still need to bump the version.** The constant on the first line of `app/sw.js` (`journal-v1`) names the cache. Changing it makes every device throw its whole stored copy away on next load. That's worth doing when:
+
+- you've renamed or deleted files and want stale ones cleared out rather than lingering in the cache;
+- something looks wrong on the phone and you want to force a clean slate;
+- you change the service worker's own caching logic and want a clean start.
+
+Bump it to `journal-v2`, `journal-v3` and so on, and keep `APP_VERSION` in `app/js/version.js` in step so the label in the menu matches.
+
+> **The tradeoff:** network-first means each screen waits for the network before it paints when you're online, so the app is a touch slower on a bad connection than a cache-first one would be. It's fully usable offline either way — this just trades a little speed for always seeing your latest push.
 
 ## Installing it on your Android phone
 

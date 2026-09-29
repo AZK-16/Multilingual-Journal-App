@@ -91,7 +91,7 @@ function mountOverlay(node, { onDismiss }) {
 }
 
 // Bottom sheet menu. items: [{ label, icon, danger, checked, onSelect }]
-export function bottomSheet({ title, items }) {
+export function bottomSheet({ title, items, footer }) {
   const sheet = el('div', { class: 'sheet', role: 'menu' }, [el('div', { class: 'sheet-grip' })]);
   if (title) sheet.append(el('div', { class: 'sheet-title', text: title }));
 
@@ -116,6 +116,8 @@ export function bottomSheet({ title, items }) {
       ])
     );
   }
+
+  if (footer) sheet.append(el('div', { class: 'sheet-footer', text: footer }));
 
   close = mountOverlay(sheet, {});
   return close;
