@@ -41,7 +41,7 @@ function render(folders, counts) {
 
   gridEl.append(
     el('button', {
-      class: 'folder-card',
+      class: 'folder-card new-folder',
       type: 'button',
       onclick: onCreateFolder
     }, [

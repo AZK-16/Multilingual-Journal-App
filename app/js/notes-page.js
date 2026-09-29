@@ -1,6 +1,6 @@
 // All Notes: real cards from storage, favourites pinned first, search and sort.
 
-import { getAllNotes, createNote, exportAll, importAll, validateBackup } from './db.js';
+import { getAllNotes, exportAll, importAll, validateBackup } from './db.js';
 import { searchNotes, sortNotes, pluralise } from './model.js';
 import {
   boot, renderNoteCard, renderEmptyState, bottomSheet, consumeFlash,
@@ -24,9 +24,10 @@ function syncSortButton() {
   sortBtn.textContent = order === 'newest' ? 'Newest first ↓' : 'Oldest first ↑';
 }
 
-async function openNewNote() {
-  const note = await createNote(null);
-  location.href = `./note.html?id=${encodeURIComponent(note.id)}`;
+// The editor creates the record itself, so it knows the note is new and can
+// discard it again if it is left without a word in it.
+function openNewNote() {
+  location.href = './note.html';
 }
 
 function render() {

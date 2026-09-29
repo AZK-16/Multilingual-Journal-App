@@ -1,7 +1,7 @@
 // Folder contents: the same card grid as All Notes, scoped to one folder.
 
 import {
-  getFolder, getNotesInFolder, createNote, renameFolder, softDeleteFolder
+  getFolder, getNotesInFolder, renameFolder, softDeleteFolder
 } from './db.js';
 import { searchNotes, sortNotes, pluralise } from './model.js';
 import {
@@ -70,9 +70,10 @@ async function refresh() {
   render();
 }
 
-async function newNote() {
-  const note = await createNote(folder.id);
-  location.href = `./note.html?id=${encodeURIComponent(note.id)}`;
+// The editor creates the record itself, filed into this folder, so it can
+// discard the note again if it is left empty.
+function newNote() {
+  location.href = `./note.html?folder=${encodeURIComponent(folder.id)}`;
 }
 
 async function onRename() {
