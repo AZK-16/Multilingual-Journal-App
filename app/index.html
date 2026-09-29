@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Journal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#00897B">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+<div class="screen">
+  <div class="topbar">
+    <h1>My Notes</h1>
+    <button class="icon-btn" id="overflowBtn" type="button" aria-label="More options">⋮</button>
+  </div>
+
+  <div class="tabbar">
+    <a class="active" href="./index.html">All Notes</a>
+    <a href="./folders.html">Folders</a>
+  </div>
+
+  <div class="search-bar">
+    <span aria-hidden="true">🔍</span>
+    <input id="searchInput" type="search" inputmode="search" dir="auto"
+           placeholder="Search notes" aria-label="Search notes" autocomplete="off">
+    <button class="search-clear hidden" id="searchClear" type="button" aria-label="Clear search">✕</button>
+  </div>
+
+  <div class="sort-row">
+    <span class="result-count" id="resultCount"></span>
+    <button class="sort-pill" id="sortBtn" type="button">Newest first ↓</button>
+  </div>
+
+  <div class="note-grid" id="noteGrid"></div>
+
+  <a class="fab" href="./note.html" aria-label="New note">+</a>
+</div>
+
+<script type="module" src="./js/notes-page.js"></script>
+</body>
+</html>
